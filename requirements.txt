@@ -1,0 +1,5 @@
+app
+qrcode
+time
+os
+flask
