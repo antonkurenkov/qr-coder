@@ -1,0 +1,16 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - QRenkov</title>
+    {% else %}
+    <title>QRenkov</title>
+    {% endif %}
+  </head>
+  <body>
+    <div>QR code generator: <a href="/index">Home</a></div>
+    <hr>
+    <div id="form-wrapper" style="text-align:center">
+    {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

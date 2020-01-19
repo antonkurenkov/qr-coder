@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST">
+    <h1>BLOCK1</h1>
+    Наименование получателя платежа <input name="NAME"><br>
+    Номер счета получателя платежа <input name="PERSONAL_ACC"><br>
+    Наименование банка получателя платежа <input name="BANK_NAME"><br>
+    БИК банка получателя платежа <input name="BIC"><br>
+    Номер кор./сч. банка получателя платежа <input name="CORRESP_ACC"><br>
+    <h1>BLOCK2</h1>
+    --->Cумма платежа, в копейках <input name="SUM"><br>
+    Наименование платежа (назначение) <input name="PURPOSE"><br>
+    Имя плательщика <input name="FIRST_NAME"><br>
+    Фамилия плательщика <input name="LAST_NAME"><br>
+    Отчество плательщика <input name="MIDDLE_NAME"><br>
+    ИНН получателя платежа <input name="PAYEE_INN"><br>
+    КПП получателя платежа <input name="KPP"><br>
+    Адрес плательщика <input name="PAYER_ADRESS"><br>
+    <input type="submit" value="Generate2">
+</form>
+{% endblock %}
+<!--
+
+Sum — сумма платежа, в копейках;
+Purpose — наименование платежа (назначение);
+LastName — фамилия плательщика;
+FirstName — имя плательщика;
+MiddleName — отчество плательщика;
+PayerAddress — адрес плательщика.
+
+
+    NAME = 'ООО "Рога и копыта"'  # max 160
+    PERSONAL_ACC = '40708407654768768769'  # max 20
+    BANK_NAME = 'АО "АЛЬФА-БАНК"'  # max 45
+    BIC = '044525593'  # max 9
+    CORRESP_ACC = '30101810200000000593'  # max 20
+
+    SUM = '100500'  # max 18
+    PURPOSE = 'Оплата заказа 123123123'  # max 210
+    PAYEE_INN = '9876856765'  # max 12
+    PAYER_INN = '6666131313'  # max 12
+    DRAWER_STATUS = '00'  # max 2
+    KPP = '345437436'  # max 9
+    CBC = '0000000000000000000'  # max 20
+    OKTMO = '00000000000'  # max 11
+    PAYT_REASON = '00'  # max 2
+    TAX_PERIOD = '0000000000'  # max 10
+    DOC_NO = '000000000000000'  # max 15
+    DOC_DATE = '0000000000'  # max 10
+    TAX_PAYT_KIND = '00'  # max 2
+
+    LAST_NAME = 'Куренков'
+    FIRST_NAME = 'Антон'
+    MIDDLE_NAME = 'Андреевич'
+    PAYER_ADRESS = 'Россия, Санкт-Петербург, ул. Ленсовета, д. 50, кв. 19'
+    PERSONAL_ACCOUNT = '00000000'
+
+-->
