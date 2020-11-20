@@ -1,7 +1,11 @@
 import qrcode
 import time
 import os
+import psycopg2
 """
+
+http://docs.cntd.ru/document/1200110981
+
 Name — наименование получателя платежа;
 PayeeINN — ИНН получателя платежа;
 KPP — КПП получателя платежа;
@@ -38,11 +42,15 @@ class Painter():
         qr.add_data(textcode)
         qr.make(fit=True)
 
-        img = qr.make_image(fill_color="black", back_color="white")
-        self.imgTime = time.time()
-        self.fullPath = f'{self.imgTime}.png'
+        self.img = qr.make_image(fill_color="black", back_color="white")
+        # self.imgTime = time.time()
+        #
+        # self.fullPath = f'{self.imgTime}.png'
+
         # self.fullPath = os.path.join('static', self.name)
-        img.save(('app/static/' + self.fullPath))
+        # img.save(('app/static/' + self.fullPath))
+
+
 
 
 class Collector():
@@ -137,12 +145,15 @@ def main():
     MIDDLE_NAME = 'Андреевич'
     PAYER_ADRESS = 'Россия, Санкт-Петербург, ул. Ленсовета, д. 50, кв. 19'
     PERSONAL_ACCOUNT = '00000000'
+    try:
+        text = Collector()
+        text.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
+        text.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
+        textcode = text.compose()
+        print(textcode)
+    except AssertionError as err:
+        print(err.args[0])
 
-    text = Collector()
-    text.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
-    text.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
-    textcode = text.compose()
-    print(textcode)
     # Painter(textcode).img.save('qr.jpg')
 
 if __name__ == "__main__":

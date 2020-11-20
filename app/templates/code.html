@@ -3,8 +3,9 @@
 <title>{{title}} - Code</title>
 <div>
     <p>{{title}}</p>
-    {% if image %}
-    <img src="{{image}}" alt="{{alt}}" width="30%">
+    {% if img_bin %}
+<!--    <img src="{{image}}" >-->
+    <img src="data:image/png;base64, {{img_bin}}" alt="{{alt}}" width="30%">
     {% endif %}
     <input type="button" onclick="history.back();" value="Back"/>
 </div>

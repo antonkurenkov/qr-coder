@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<title>Error</title>
+<div>
+    <p>{{error}}</p>
+    <input type="button" onclick="history.back();" value="Back"/>
+</div>
+{% endblock %}
