@@ -50,7 +50,7 @@ def main_form_post():
         in_image.save(imgByteArr, format='PNG')
         imgByteArr = imgByteArr.getvalue()
         
-        # BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
+        BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
         # out_image = BaseConnector().select(code=textcode)
 
         # return render_template('error.html', error=str(out_image))
