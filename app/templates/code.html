@@ -4,7 +4,6 @@
 <div>
     <p>{{title}}</p>
     {% if img_bin %}
-<!--    <img src="{{image}}" >-->
     <img src="data:image/png;base64, {{img_bin}}" alt="{{alt}}" width="30%">
     {% endif %}
     <input type="button" onclick="history.back();" value="Back"/>

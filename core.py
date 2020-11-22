@@ -2,6 +2,8 @@ import qrcode
 import time
 import os
 import psycopg2
+import requests
+
 """
 
 http://docs.cntd.ru/document/1200110981
@@ -116,6 +118,14 @@ class Collector():
         code = self.block1 + self.SERVISE_BLOCK['delimeter'] + self.block2 + self.SERVISE_BLOCK['delimeter'] + self.block3
         return f'{code}'
 
+    @staticmethod
+    def verify_captcha(captcha_key):
+        data = {
+            'response': captcha_key,
+            'secret': '0x77770aFD19801D14a86f15f685984fE8AA13505f'
+        }
+        response = requests.post(url='https://hcaptcha.com/siteverify', data=data).json()
+        assert response['success'] is True, 'Wrong captcha'
 
 
 def main():
@@ -156,5 +166,7 @@ def main():
 
     # Painter(textcode).img.save('qr.jpg')
 
+
 if __name__ == "__main__":
     main()
+

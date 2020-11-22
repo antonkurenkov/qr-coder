@@ -4,6 +4,7 @@ import io
 import base64
 from app import app
 from core import Painter, Collector
+
 from post import BaseConnector
 
 import requests
@@ -35,8 +36,10 @@ def main_form_post():
     PAYER_ADRESS = request.form['PAYER_ADRESS']
     PAYEE_INN = request.form['PAYEE_INN']
     KPP = request.form['KPP']
+    captcha_key = request.form['h-captcha-response']
     try:
         textcode = Collector()
+        textcode.verify_captcha(captcha_key)
         textcode.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
         textcode.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
         textcode = textcode.compose()
@@ -46,15 +49,14 @@ def main_form_post():
         imgByteArr = io.BytesIO()
         in_image.save(imgByteArr, format='PNG')
         imgByteArr = imgByteArr.getvalue()
+        
         BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
-
         out_image = BaseConnector().select(code=textcode)
 
         # return render_template('error.html', error=str(out_image))
 
         return render_template('code.html', img_bin=base64.b64encode(imgByteArr).decode("utf-8"), alt=textcode, title=textcode)
     except AssertionError as err:
-        print(err.args[0])
         return render_template('error.html', error=err.args[0])
 
 
