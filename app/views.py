@@ -4,7 +4,8 @@ import io
 import base64
 from app import app
 from core import Painter, Collector
-# from post import BaseConnector
+
+from post import BaseConnector
 
 import requests
 import re
@@ -48,9 +49,9 @@ def main_form_post():
         imgByteArr = io.BytesIO()
         in_image.save(imgByteArr, format='PNG')
         imgByteArr = imgByteArr.getvalue()
-        # BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
-
-        # out_image = BaseConnector().select(code=textcode)
+        
+        BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
+        out_image = BaseConnector().select(code=textcode)
 
         # return render_template('error.html', error=str(out_image))
 
