@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <title>Error</title>
-<div>
-    <p>{{error}}</p>
-    <input type="button" onclick="history.back();" value="Back"/>
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('../static/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <div style="text-align: center">
+                <p><h3>{{ error }}</h3></p>
+            </div>
+            <br>
+            <div class="container-login100-form-btn">
+                <div class="wrap-login100-form-btn">
+                    <div class="login100-form-bgbtn"></div>
+                    <button class="login100-form-btn" onclick="history.back();" value="Back">
+                        BACK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
