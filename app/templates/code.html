@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<title>{{title}} - Code</title>
-<div>
-    <p>{{title}}</p>
-    {% if img_bin %}
-    <img src="data:image/png;base64, {{img_bin}}" alt="{{alt}}" width="30%">
-    {% endif %}
-    <input type="button" onclick="history.back();" value="Back"/>
+{#<title>{{title}} - Code</title>#}
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('../static/images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+{#            <p>{{title}}</p>#}
+            {% if img_bin %}
+                <div style="display: block; margin: auto; text-align: center;">
+                    <img src="data:image/png;base64, {{img_bin}}" alt="{{alt}}" width="90%">
+                </div>
+            {% endif %}
+
+            <div class="container-login100-form-btn">
+                <div class="wrap-login100-form-btn">
+                    <div class="login100-form-bgbtn"></div>
+                    <button class="login100-form-btn" onclick="history.back();" value="Back">
+                        BACK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
