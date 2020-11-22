@@ -56,7 +56,6 @@ def main_form_post():
 
         return render_template('code.html', img_bin=base64.b64encode(imgByteArr).decode("utf-8"), alt=textcode, title=textcode)
     except AssertionError as err:
-        print(err.args[0])
         return render_template('error.html', error=err.args[0])
 
 
