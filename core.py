@@ -1,7 +1,12 @@
 import qrcode
 import time
 import os
+import psycopg2
+import requests
 """
+
+http://docs.cntd.ru/document/1200110981
+
 Name — наименование получателя платежа;
 PayeeINN — ИНН получателя платежа;
 KPP — КПП получателя платежа;
@@ -38,11 +43,15 @@ class Painter():
         qr.add_data(textcode)
         qr.make(fit=True)
 
-        img = qr.make_image(fill_color="black", back_color="white")
-        self.imgTime = time.time()
-        self.fullPath = f'{self.imgTime}.png'
+        self.img = qr.make_image(fill_color="black", back_color="white")
+        # self.imgTime = time.time()
+        #
+        # self.fullPath = f'{self.imgTime}.png'
+
         # self.fullPath = os.path.join('static', self.name)
-        img.save(('app/static/' + self.fullPath))
+        # img.save(('app/static/' + self.fullPath))
+
+
 
 
 class Collector():
@@ -108,6 +117,14 @@ class Collector():
         code = self.block1 + self.SERVISE_BLOCK['delimeter'] + self.block2 + self.SERVISE_BLOCK['delimeter'] + self.block3
         return f'{code}'
 
+    @staticmethod
+    def verify_captcha(captcha_key):
+        data = {
+            'response': captcha_key,
+            'secret': '0x77770aFD19801D14a86f15f685984fE8AA13505f'
+        }
+        response = requests.post(url='https://hcaptcha.com/siteverify', data=data).json()
+        assert response['success'] is True, 'Wrong captcha'
 
 
 def main():
@@ -137,13 +154,18 @@ def main():
     MIDDLE_NAME = 'Андреевич'
     PAYER_ADRESS = 'Россия, Санкт-Петербург, ул. Ленсовета, д. 50, кв. 19'
     PERSONAL_ACCOUNT = '00000000'
+    try:
+        text = Collector()
+        text.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
+        text.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
+        textcode = text.compose()
+        print(textcode)
+    except AssertionError as err:
+        print(err.args[0])
 
-    text = Collector()
-    text.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
-    text.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
-    textcode = text.compose()
-    print(textcode)
     # Painter(textcode).img.save('qr.jpg')
+
 
 if __name__ == "__main__":
     main()
+
