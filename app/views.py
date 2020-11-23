@@ -3,7 +3,7 @@ import os
 import io
 import base64
 from app import app
-from core import Painter, Collector
+from core import Painter, Loader
 
 from post import BaseConnector
 
@@ -22,127 +22,28 @@ def my_form():
 @app.route('/', methods=['POST'])
 def main_form_post():
 
-    NAME = request.form['NAME']  # max 160
-    PERSONAL_ACC = request.form['PERSONAL_ACC']  # max 20
-    BANK_NAME = request.form['BANK_NAME']  # max 45
-    BIC = request.form['BIC']  # max 9
-    CORRESP_ACC = request.form['CORRESP_ACC']  # max 20
+    required_keys = ['Name', 'PersonalAcc', 'BankName', 'BIC', 'CorrespAcc', 'h-captcha-response']
+    optional_keys = ['Sum', 'Purpose', 'FirstName', 'LastName', 'MiddleName', 'PayerAdress', 'PayeeINN', 'KPP']
 
-    SUM = request.form['SUM']  # max 18
-    PURPOSE = request.form['PURPOSE']  # max 210
-    LAST_NAME = request.form['LAST_NAME']
-    FIRST_NAME = request.form['FIRST_NAME']
-    MIDDLE_NAME = request.form['MIDDLE_NAME']
-    PAYER_ADRESS = request.form['PAYER_ADRESS']
-    PAYEE_INN = request.form['PAYEE_INN']
-    KPP = request.form['KPP']
-    captcha_key = request.form['h-captcha-response']
-    try:
-        textcode = Collector()
-        textcode.verify_captcha(captcha_key)
-        textcode.obligatory_block(name=NAME, personalacc=PERSONAL_ACC, bankname=BANK_NAME, bik=BIC, correspacc=CORRESP_ACC)
-        textcode.additioanl_block(summ=SUM, purpose=PURPOSE, firstname=FIRST_NAME, lastname=LAST_NAME, middlename=MIDDLE_NAME, payeeinn=PAYEE_INN, kpp=KPP, payeradress=PAYER_ADRESS)
-        textcode = textcode.compose()
+    required_data = {key: request.form[key] for key in required_keys}
+    optional_data = {key: request.form[key] for key in optional_keys}
 
-        in_image = Painter(textcode=textcode).img.get_image()
-        # in_image.save('img.png')
-        imgByteArr = io.BytesIO()
-        in_image.save(imgByteArr, format='PNG')
-        imgByteArr = imgByteArr.getvalue()
-        
-        BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
-        # out_image = BaseConnector().select(code=textcode)
+    loader = Loader(required_block=required_data, optional_block=optional_data)
+    if loader.error:
+        return render_template('error.html', error=loader.error)
+    else:
+        try:
+            textcode = loader.compose()
+            in_image = Painter(textcode=textcode).img.get_image()
+            # in_image.save('img.png')
+            imgByteArr = io.BytesIO()
+            in_image.save(imgByteArr, format='PNG')
+            imgByteArr = imgByteArr.getvalue()
 
-        # return render_template('error.html', error=str(out_image))
+            BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
+            # out_image = BaseConnector().select(code=textcode)
 
-        return render_template('code.html', img_bin=base64.b64encode(imgByteArr).decode("utf-8"), alt=textcode, title=textcode)
-    except AssertionError as err:
-        return render_template('error.html', error=err.args[0])
-
-
-# def get_description(title):
-#     """
-#     Get short description given article.
-#     Returns a string of page description.
-#     If description is absent for the page, takes the first sentence of the article summary.
-#
-#     Keyword arguments:
-#
-#     * title - the title of the page to load.
-#     """
-#     try:
-#         params = {
-#             "action": "query",
-#             "format": "json",
-#             "formatversion": "2",
-#             "titles": title,
-#             "prop": "description",
-#             "redirects": True,
-#         }
-#         response = requests.Session().get(url="https://wikipedia.org/w/api.php", params=params)
-#         data = response.json()
-#         return data["query"]["pages"][0]["description"].capitalize() + '.'
-#     except KeyError:
-#         params = {
-#             "action": "query",
-#             "format": "json",
-#             "titles": title,
-#             'prop': 'extracts',
-#             'explaintext': True,
-#             'redirects': True,
-#         }
-#         response = requests.Session().get(url="https://wikipedia.org/w/api.php", params=params)
-#         data = response.json()
-#         return list(data["query"]["pages"].values())[0]['extract'].partition('.')[0] + '.'
-#
-#
-# def get_image(title):
-#     """
-#     Get a main image of a given article.
-#     Returns a direct image link or 'False' if image is not presented in the article.
-#
-#     Keyword arguments:
-#
-#     * title - the title of the page to load.
-#     """
-#     try:
-#         params = {
-#             "action": "query",
-#             "format": "json",
-#             "titles": title,
-#             "prop": "pageimages",
-#             "piprop": "original",
-#             "redirects": True,
-#         }
-#         response = requests.Session().get(url="https://wikipedia.org/w/api.php", params=params)
-#         data = response.json()
-#         return list(data["query"]["pages"].values())[0]['original']['source']
-#     except KeyError:
-#         return False
-#
-#
-# def get_links(title):
-#     """
-#     Get a list of titles for requested query.
-#     The func finds all referred articles and returns the list of their titles.
-#
-#     Keyword arguments:
-#
-#     * title - the title of the page to load.
-#     """
-#     try:
-#         params = {
-#             "action": "query",
-#             "format": "json",
-#             "titles": title,
-#             'prop': 'revisions',
-#             'rvprop': 'content',
-#             "redirects": True,
-#         }
-#         response = requests.Session().get(url="https://wikipedia.org/w/api.php", params=params)
-#         data = response.json()
-#         refers = list(data["query"]["pages"].values())[0]['revisions'][0]['*']
-#         my_links = re.findall(r'\[\[(.*?)\]\]', refers)
-#         return [link.partition('|')[0] for link in my_links]
-#     except KeyError:
-#         return False
+            return render_template('code.html', img_bin=base64.b64encode(imgByteArr).decode("utf-8"), alt=textcode,
+                                   title=textcode)
+        except Exception as e:
+            return render_template('error.html', error=f'Unexpected {e.args[0]}')
