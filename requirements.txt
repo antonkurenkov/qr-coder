@@ -9,9 +9,19 @@ Flask-SQLAlchemy==2.4.0
 Flask-User==1.0.1.5
 Flask-WTF==0.14.2
 
-requests==2.22.0
 qrcode==6.1
 Pillow==7.0.0
 
 gunicorn
-psycopg2
+Psycopg2-binary
+
+setuptools>=41.0.0
+numpy==1.18.0
+selenium
+urllib3==1.24
+requests==2.21.0
+scikit-build
+cvlib
+opencv-python
+colorama
+tensorflow
