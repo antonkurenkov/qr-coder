@@ -113,16 +113,21 @@ class Producer:
 
 class User(ProxyMiner, Solver):
 
-    def __init__(self, url, local):
-        p = Producer()
-        p.create_user()
-        self.required_block, self.optional_block = p.produce_data()
-        self.useragent = p.useragent
-        super().__init__(url, local)
-        self.done = False
-        self.speed = 1 + (random.randint(-7, 5) / 10)
+    def __init__(self, url, local, virtual=False):
+        self.virtual = virtual
+        self.proxy = None
+        if not self.virtual:
+            p = Producer()
+            p.create_user()
+            self.required_block, self.optional_block = p.produce_data()
+            self.useragent = p.useragent
+            super().__init__(url, local)
+            self.done = False
+            self.speed = 1 + (random.randint(-7, 5) / 10)
 
     def prepare_driver(self, proxy_used):
+        if self.virtual:
+            return
         if proxy_used:
             webdriver.DesiredCapabilities.CHROME['proxy'] = {
                 "httpProxy": self.proxy,
@@ -184,9 +189,10 @@ class User(ProxyMiner, Solver):
             if not idx % random.randint(4, 6):
                 time.sleep(1)
 
-
     def find_required_fields_for_input(self, required_block=None):
         print('find_required_fields_for_input')
+        if self.virtual:
+            return
         order = ('Name', 'PersonalAcc', 'BankName', 'BIC', 'CorrespAcc')
         fields = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//div[@class="wrap-input100 validate-input m-b-23"]/input[@class="input100"]')))
@@ -199,6 +205,8 @@ class User(ProxyMiner, Solver):
 
     def find_optional_fields_for_input(self, optional_block=None):
         print('find_optional_fields_for_input')
+        if self.virtual:
+            return
         order = ('Sum', 'Purpose', 'FirstName', 'LastName', 'MiddleName', 'PayeeINN',  'KPP', 'PayerAdress')
         fields = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//div[@class="wrap-input100 m-b-23"]/input[@class="input100"]')))
@@ -214,6 +222,8 @@ class User(ProxyMiner, Solver):
 
     def scroll(self, px=None, scrollback=True):
         print('scroll')
+        if self.virtual:
+            return
         if px is None:
             seed = random.randint(500, 1000)
         else:
@@ -245,10 +255,14 @@ class User(ProxyMiner, Solver):
 
     def solve_captcha(self, on_login_page):
         print('solve_captcha')
+        if self.virtual:
+            return
         self.solve_hcaptcha(on_login_page=on_login_page)
 
     def submit_form(self):
         print('submit_form')
+        if self.virtual:
+            return
         self.driver.switch_to.default_content()
         button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//button[@class="login100-form-btn"]')))
         time.sleep(random.random())
@@ -256,14 +270,20 @@ class User(ProxyMiner, Solver):
 
     def click_back(self):
         print('click_back')
+        if self.virtual:
+            return
         pass
 
     def click_random_button(self):
         print('click_random_button')
+        if self.virtual:
+            return
         pass
 
     def click_on_adv_banner(self):
         print('click_on_adv_banner')
+        if self.virtual:
+            return
 
     def do_random_stuff(self):
         print('do_random_stuff')
@@ -313,9 +333,11 @@ class User(ProxyMiner, Solver):
                                     redirected(probability_coeff=10)  # 6%
 
     def be_human(self, url: str):
-        self.driver.get(url)
-        if self.driver.title == 'QR CODE GENERATOR':
-            WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body')))
+        if not self.virtual:
+            self.driver.get(url)
+        if self.virtual or self.driver.title == 'QR CODE GENERATOR':
+            if not self.virtual:
+                WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body')))
             if self.happened(probability_coeff=250):
                 self.do_job()
             success = True
@@ -331,14 +353,15 @@ if __name__ == '__main__':
     # url_to_visit = 'http://localhost:5000/'
     url_to_visit = 'http://aqr-coder.herokuapp.com'
     users_local = True
-    bot_number = 10
-
+    virtual = True
+    bot_number = 10000
 
     used_queue = []
     for i in range(bot_number):
-        u = User(url_to_visit, local=users_local)
-        print(f'VISIT {url_to_visit} over {u.proxy}')
-        u.prepare_driver(u.proxy)
+        u = User(url_to_visit, local=users_local, virtual=virtual)
+        if not virtual:
+            print(f'VISIT {url_to_visit} over {u.proxy}')
+            u.prepare_driver(u.proxy)
         try:
             success = u.be_human(url_to_visit)
             # success = u.do_job()  # to just test scenario
@@ -346,11 +369,16 @@ if __name__ == '__main__':
             #     used_queue.append(u.proxy)
         except Exception as e:
             print(e)
-
-        u.driver.quit()
+        if not u.virtual:
+            u.driver.quit()
         # if len(used_queue) == 10:
         #     break
-        print()
+        print('---')
+        if not u.virtual:
+            zzz = random.randint(60, 600)
+            print(f'sleeping {zzz}s')
+            time.sleep(zzz)
+
 
 
 
