@@ -335,7 +335,7 @@ class User(ProxyMiner, Solver):
     def be_human(self, url: str):
         if not self.virtual:
             self.driver.get(url)
-        if self.virtual or self.driver.title == 'QR CODE GENERATOR':
+        if self.virtual or self.driver.title == 'Payment QR-code generator':
             if not self.virtual:
                 WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body')))
             if self.happened(probability_coeff=250):
@@ -346,12 +346,56 @@ class User(ProxyMiner, Solver):
         return success
 
 
+def get_redirected_url():
+
+    def num_postfix():
+        return f'{"".join([random.choice(letters) for _ in range(random.randint(1, 5))])}={"".join([random.choice(nums) for _ in range(random.randint(1, 10))])}'
+
+    def letter_postfix():
+        return f'{"".join([random.choice(letters) for _ in range(random.randint(1, 5))])}={"".join([random.choice(arr) for _ in range(random.randint(16, 50))])}'
+
+    letters = 'abcdefghijklmnopqrstuvwxyz'
+    letters_upper = 'abcdefghijklmnopqrstuvwxyz'.upper()
+    nums = '0123456789'
+    uu = '_-'
+    arr = letters + letters_upper + nums + uu
+
+    fake_args = '&'.join([random.choice([num_postfix, letter_postfix])() for _ in range(random.randint(1, 3))])
+
+    data_dict = {
+        'social': [
+            f'https://vk.com/away.php?utf={random.randint(1, 6)}&to=https%3A%2F%2Fwww.payqrcode.ru',
+            f'https://vk.com/away.php?utf={random.randint(1, 6)}&to=https%3A%2F%2Fwww.payqrcode.ru',
+            f'https://vk.com/away.php?utf={random.randint(1, 6)}&to=https%3A%2F%2Fwww.payqrcode.ru',
+            f'https://vk.com/away.php?utf={random.randint(1, 6)}&to=https%3A%2F%2Fwww.payqrcode.ru',
+            f'https://vk.com/away.php?utf={random.randint(1, 6)}&to=https%3A%2F%2Fwww.payqrcode.ru',
+            f'https://www.payqrcode.ru/?lr=2&redircnt={"".join([str(random.randint(1, 9)) for _ in range(10)])}.{random.randint(1, 9)}',
+            f'https://www.payqrcode.ru/?fbclid={"".join([random.choice(arr) for _ in range(63)])}',
+            f'https://www.payqrcode.ru/?{fake_args}'
+        ],
+        'direct': [
+            'https://www.payqrcode.ru',
+            'https://www.payqrcode.ru',
+            'https://www.payqrcode.ru',
+            'https://www.payqrcode.ru',
+            'https://www.payqrcode.ru',
+            'https://www.payqrcode.ru/index',
+            'https://www.payqrcode.ru/index',
+            'http://www.payqrcode.ru',
+            'http://www.payqrcode.ru/index',
+            'http://payqrcode.ru',
+            'http://payqrcode.ru/index',
+        ]
+    }
+    source = data_dict[random.choice(list(data_dict.keys()))]
+    return random.choice(source)
+
+
 if __name__ == '__main__':
 
-
-    # url_to_visit = 'http://www.payqrcode.ru'
+    url_to_visit = 'https://www.payqrcode.ru'
     # url_to_visit = 'http://localhost:5000/'
-    url_to_visit = 'http://aqr-coder.herokuapp.com'
+    # url_to_visit = 'http://aqr-coder.herokuapp.com'
     users_local = True
     virtual = True
     bot_number = 10000
@@ -363,10 +407,11 @@ if __name__ == '__main__':
             print(f'VISIT {url_to_visit} over {u.proxy}')
             u.prepare_driver(u.proxy)
         try:
-            success = u.be_human(url_to_visit)
+            redirected = get_redirected_url()
+            success = u.be_human(redirected)
             # success = u.do_job()  # to just test scenario
-            # if success:
-            #     used_queue.append(u.proxy)
+            if success:
+                used_queue.append(u.proxy)
         except Exception as e:
             print(e)
         if not u.virtual:
