@@ -2,4 +2,4 @@
 from app import app, views
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(ssl_context=('certificate_ca.crt,', 'certificate.crt'), debug=True, host='31.31.192.197')
