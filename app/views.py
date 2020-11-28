@@ -5,7 +5,7 @@ import base64
 from app import app
 from core import Painter, Loader
 
-from post import BaseConnector
+# from post import BaseConnector
 
 import requests
 import re
@@ -40,7 +40,7 @@ def main_form_post():
             in_image.save(imgByteArr, format='PNG')
             imgByteArr = imgByteArr.getvalue()
 
-            BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
+            # BaseConnector().insert(code=textcode, imgByteArr=imgByteArr)
             # out_image = BaseConnector().select(code=textcode)
 
             return render_template('code.html', img_bin=base64.b64encode(imgByteArr).decode("utf-8"), alt=textcode,
