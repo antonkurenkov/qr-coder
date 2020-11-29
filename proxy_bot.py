@@ -150,6 +150,8 @@ class User(ProxyMiner, Solver):
         # if random.randint(0, 100) >= 10:
         #     options.add_argument('--start-maximized')
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.add_argument("window-size=1024,768")
         options.add_argument('--no-sandbox')
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         self.driver = webdriver.Chrome(
@@ -387,7 +389,7 @@ class User(ProxyMiner, Solver):
 
                 if not redirected(probability_coeff=1):  # 2%
 
-                    if self.happened(probability_coeff=1000):  # 99%
+                    if self.happened(probability_coeff=100):  # 50%
                         self.find_optional_fields_for_input()
 
                         if self.happened(probability_coeff=20):
@@ -422,7 +424,7 @@ class User(ProxyMiner, Solver):
         if self.virtual or self.driver.title == 'Payment QR-code generator':
             if not self.virtual:
                 WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, '//body')))
-            if self.happened(probability_coeff=500):
+            if self.happened(probability_coeff=1000):
                 self.do_job()
             else:
                 time.sleep(random.randint(1, 20))

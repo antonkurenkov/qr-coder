@@ -15,6 +15,7 @@ Pillow==7.0.0
 gunicorn
 Psycopg2-binary
 
+chromedriver-binary==77.0.3865.40.0
 setuptools>=41.0.0
 numpy==1.18.0
 selenium
