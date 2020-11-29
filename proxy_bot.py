@@ -90,8 +90,10 @@ class Producer:
 
     def produce_data(self):
         with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
+        # with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
             self.bankname = random.choice(file.read().split('\n'))
         with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
+        # with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
             self.purpose = random.choice(file.read().split('\n'))
         obligatory_block = {
             'Name': f'{self.lastname} {self.firstname} {self.middlename}',
@@ -167,6 +169,7 @@ class User(ProxyMiner, Solver):
 
         self.driver = webdriver.Chrome(
             executable_path="/home/antonkurenkov/qr-coder/chromedriver-86-linux",
+            # executable_path="/Users/antonkurenkov/Proj/qr-coder/chromedriver-86-osx",
             options=options
         )
 
