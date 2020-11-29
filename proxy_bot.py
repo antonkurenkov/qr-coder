@@ -11,6 +11,7 @@ from solver import Solver
 from faker import Faker
 from fake_useragent import UserAgent
 
+import os
 import random
 import time
 import requests
@@ -85,10 +86,12 @@ class Producer:
 
         return self.firstname, self.middlename, self.lastname
 
+
+
     def produce_data(self):
-        with open('userdata/banknames.txt') as file:
+        with open(os.path.join(os.getcwd(), 'userdata/banknames.txt')) as file:
             self.bankname = random.choice(file.read().split('\n'))
-        with open('userdata/purposes.txt') as file:
+        with open(os.path.join(os.getcwd(), 'userdata/purposes.txt')) as file:
             self.purpose = random.choice(file.read().split('\n'))
         obligatory_block = {
             'Name': f'{self.lastname} {self.firstname} {self.middlename}',
@@ -156,8 +159,11 @@ class User(ProxyMiner, Solver):
 
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-gpu')
-
         options.add_argument('--no-sandbox')
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-setuid-sandbox")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
         self.driver = webdriver.Chrome(
