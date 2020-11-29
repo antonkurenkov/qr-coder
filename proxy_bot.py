@@ -1,9 +1,9 @@
-from proxy_requests import ProxyRequests
+# from proxy_requests import ProxyRequests
 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 
@@ -11,10 +11,10 @@ from solver import Solver
 from faker import Faker
 from fake_useragent import UserAgent
 
-import os
+# import os
 import random
 import time
-import requests
+# import requests
 
 
 class ProxyMiner:
@@ -152,18 +152,18 @@ class User(ProxyMiner, Solver):
 
         options.headless = True
         #
-        if random.randint(0, 100) >= 30:
-            options.add_argument('--start-maximized')
-        elif random.randint(0, 100) >= 30:
-            options.add_argument("window-size=1024,768")
+        # if random.randint(0, 100) >= 30:
+        #     options.add_argument('--start-maximized')
+        # elif random.randint(0, 100) >= 30:
+        #     options.add_argument("window-size=1024,768")
 
-        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
         # options.add_argument("--disable-infobars")
         # options.add_argument("--disable-extensions")
         # options.add_argument("--disable-setuid-sandbox")
-        # options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
         self.driver = webdriver.Chrome(
             executable_path="/home/antonkurenkov/qr-coder/chromedriver-86-linux",
