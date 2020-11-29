@@ -503,7 +503,8 @@ if __name__ == '__main__':
     bot_number = 76
 
     used_queue = []
-    for i in range(bot_number):
+    # for i in range(bot_number):
+    while True:
         try:
             while True:
                 try:
