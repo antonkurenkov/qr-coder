@@ -89,9 +89,9 @@ class Producer:
 
 
     def produce_data(self):
-        with open(os.path.join(os.getcwd(), 'userdata/banknames.txt')) as file:
+        with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
             self.bankname = random.choice(file.read().split('\n'))
-        with open(os.path.join(os.getcwd(), 'userdata/purposes.txt')) as file:
+        with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
             self.purpose = random.choice(file.read().split('\n'))
         obligatory_block = {
             'Name': f'{self.lastname} {self.firstname} {self.middlename}',

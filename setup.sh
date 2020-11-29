@@ -18,3 +18,8 @@ sudo python3 -m pip install --upgrade pip setuptools wheel
 
 # INSTALL DEPENDENCIES
 sudo python3 -m pip install --no-deps --force-reinstall -r requirements.txt --no-cache-dir
+
+
+# sudo apt-get install supervisor
+# sudo vi /etc/supervisor/supervisord.conf
+# /etc/init.d/supervisor restart
