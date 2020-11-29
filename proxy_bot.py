@@ -7,6 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
 
+# import chromedriver_binary
+
 from solver import Solver
 from faker import Faker
 from fake_useragent import UserAgent
@@ -89,11 +91,11 @@ class Producer:
 
 
     def produce_data(self):
-        with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
-        # with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
+        # with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
+        with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
             self.bankname = random.choice(file.read().split('\n'))
-        with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
-        # with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
+        # with open('/home/antonkurenkov/qr-coder/userdata/banknames.txt') as file:
+        with open('/Users/antonkurenkov/Proj/qr-coder/userdata/banknames.txt') as file:
             self.purpose = random.choice(file.read().split('\n'))
         obligatory_block = {
             'Name': f'{self.lastname} {self.firstname} {self.middlename}',
@@ -145,31 +147,31 @@ class User(ProxyMiner, Solver):
 
         options = Options()
 
-        # canonic_ua = 'user-agent=Mozilla/5.0 (X11; Linux x86_64) ' \
-        #              'AppleWebKit/537.36 (KHTML, like Gecko) ' \
-        #              'Chrome/86.0.4240.111 Safari/537.36'
-        # if random.randint(0, 100) <= 30:
-        #     canonic_ua = self.useragent
-        # options.add_argument(canonic_ua)
+        canonic_ua = 'user-agent=Mozilla/5.0 (X11; Linux x86_64) ' \
+                     'AppleWebKit/537.36 (KHTML, like Gecko) ' \
+                     'Chrome/86.0.4240.111 Safari/537.36'
+        if random.randint(0, 100) <= 30:
+            canonic_ua = self.useragent
+        options.add_argument(canonic_ua)
 
         options.headless = True
         #
-        # if random.randint(0, 100) >= 30:
-        #     options.add_argument('--start-maximized')
-        # elif random.randint(0, 100) >= 30:
-        options.add_argument("window-size=1024,768")
+        if random.randint(0, 100) >= 30:
+            options.add_argument('--start-maximized')
+        elif random.randint(0, 100) >= 30:
+            options.add_argument("window-size=1024,768")
 
         # options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
-        # options.add_argument("--disable-infobars")
-        # options.add_argument("--disable-extensions")
-        # options.add_argument("--disable-setuid-sandbox")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-setuid-sandbox")
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
         self.driver = webdriver.Chrome(
-            executable_path="/home/antonkurenkov/qr-coder/chromedriver-86-linux",
-            # executable_path="/Users/antonkurenkov/Proj/qr-coder/chromedriver-86-osx",
+            # executable_path="/home/antonkurenkov/qr-coder/chromedriver-86-linux",
+            executable_path="/Users/antonkurenkov/Proj/qr-coder/chromedriver-86-osx",
             options=options
         )
 
@@ -515,9 +517,8 @@ if __name__ == '__main__':
                         u.prepare_driver(u.proxy)
                     break
                 except Exception as e:
-                    
                     print(f'user init failed with {str(e).lower()}')
-                    raise e
+                    # raise e
 
             redirected = get_redirected_url()
             print(f'VISIT {redirected} over {u.proxy}')
@@ -527,8 +528,8 @@ if __name__ == '__main__':
                 used_queue.append(u.proxy)
         except Exception as e:
             print(e)
-            raise e
-        if not u.virtual:
+            # raise e
+        if not virtual:
             time.sleep(random.randint(10, 30))
             u.driver.quit()
         print('---')
