@@ -137,7 +137,7 @@ class User(ProxyMiner, Solver):
         #         "proxyType": "MANUAL",
         #     }
         #
-        # options = Options()
+        options = Options()
         # canonic_ua = 'user-agent=Mozilla/5.0 (X11; Linux x86_64) ' \
         #              'AppleWebKit/537.36 (KHTML, like Gecko) ' \
         #              'Chrome/86.0.4240.111 Safari/537.36'
@@ -145,24 +145,35 @@ class User(ProxyMiner, Solver):
         #     canonic_ua = self.useragent
         # options.add_argument(canonic_ua)
         #
-        # # options.headless = True
+        options.headless = True
         #
-        # # if random.randint(0, 100) >= 10:
-        # #     options.add_argument('--start-maximized')
-        # options.add_argument('--disable-dev-shm-usage')
-        # options.add_argument('--no-sandbox')
-        # options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        # self.driver = webdriver.Chrome(
-        #     executable_path="/home/antonkurenkov/Proj/qr-coder/chromedriver-86-linux",
-        #     options=options
-        # )
+        # if random.randint(0, 100) >= 10:
+        #     options.add_argument('--start-maximized')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--no-sandbox')
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        self.driver = webdriver.Chrome(
+            executable_path="/home/antonkurenkov/qr-coder/chromedriver-86-linux",
+            options=options
+        )
 
-        opera_profile = '/home/antonkurenkov/.config/opera'
-        options = webdriver.ChromeOptions()
-        options.add_argument('user-data-dir=' + opera_profile)
-        # driver = webdriver.Opera(options=options, executable_path='/home/antonkurenkov/Proj/qr-coder/operadriver-86-linux')
-        self.driver = webdriver.Opera(options=options,
-                                 executable_path='/home/antonkurenkov/Proj/qr-coder/operadriver-86-linux')
+#        opera_profile = '/home/antonkurenkov/qr-coder/opera-conf/opera'
+#        options = webdriver.ChromeOptions()
+#        options.headless = True
+#        # options.add_argument('user-data-dir=' + opera_profile)
+#        # driver = webdriver.Opera(options=options, executable_path='/home/antonkurenkov/Proj/qr-coder/operadriver-86-linux')
+#        options.add_argument("--no-sandbox")
+#        options.add_argument('--disable-dev-shm-usage')
+#        options.add_argument("--disable-extensions") 
+#        options.add_argument("--disable-gpu") 
+#        options.add_argument("start-maximized") 
+#        options.add_argument("disable-infobars") 
+         
+#        options.add_argument("--disable-setuid-sandbox")
+#        options.add_argument("--remote-debugging-port=9222")
+#        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+#        self.driver = webdriver.Opera(options=options,
+#                                 executable_path='/home/antonkurenkov/qr-coder/operadriver-86-linux')
 
     @staticmethod
     def happened(probability_coeff=100, always=False):
@@ -473,7 +484,7 @@ if __name__ == '__main__':
     # url_to_visit = 'http://aqr-coder.herokuapp.com'
     users_local = False
     virtual = False
-    bot_number = 23
+    bot_number = 76
 
     used_queue = []
     for i in range(bot_number):
@@ -485,8 +496,10 @@ if __name__ == '__main__':
                         u.prepare_driver(u.proxy)
                     break
                 except Exception as e:
+                    
                     print(f'user init failed with {str(e).lower()}')
-            
+                    raise e
+
             redirected = get_redirected_url()
             print(f'VISIT {redirected} over {u.proxy}')
             success = u.be_human(redirected)
@@ -495,6 +508,7 @@ if __name__ == '__main__':
                 used_queue.append(u.proxy)
         except Exception as e:
             print(e)
+            raise e
         if not u.virtual:
             time.sleep(random.randint(10, 30))
             u.driver.quit()
@@ -502,7 +516,7 @@ if __name__ == '__main__':
         import subprocess
         # ss = subprocess.check_output('sudo rm ~/.config/opera && sudo unzip opera-conf.zip -d ~/.config/opera')
         if not u.virtual:
-            zzz = random.randint(10, 900)
+            zzz = random.randint(10, 1800)
             print(f'sleeping {zzz}s')
             time.sleep(zzz)
 
