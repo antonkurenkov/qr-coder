@@ -1,7 +1,7 @@
 import qrcode
-import time
-import os
-import psycopg2
+# import time
+# import os
+# import psycopg2
 import requests
 
 S = """
