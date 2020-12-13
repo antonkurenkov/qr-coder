@@ -47,3 +47,11 @@ def main_form_post():
                                    title=textcode)
         except Exception as e:
             return render_template('error.html', error=f'Unexpected {e.args[0]}')
+
+@app.route('/ads.txt', methods=['GET'])
+def ads_form_get():
+
+    neon_ads = ['neon.today', '47901', 'DIRECT']
+    infolinks_ads = ['infolinks.com', '3301515', 'DIRECT']
+
+    return ', '.join(neon_ads) + '<br>' + ', '.join(infolinks_ads)
