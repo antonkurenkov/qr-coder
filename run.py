@@ -2,5 +2,5 @@
 from app import app, views
 
 if __name__ == '__main__':
-    app.run(ssl_context=('/etc/ssl/server.crt', '/etc/ssl/server.key'), debug=False, host='31.31.192.197', port='443')
-
+    # app.run(ssl_context=('/etc/ssl/server.crt', '/etc/ssl/server.key'), debug=False, host='31.31.192.197', port='443')
+    app.run(debug=True)
