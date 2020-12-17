@@ -1,79 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Payment QR-code generator</title>
-      	<meta charset="UTF-8">
+    <head>
+        <title>Payment QR-code generator</title>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="yandex-verification" content="c5b025f656f09df7" />
         <meta name="google-site-verification" content="P5HZ4lfDlzYAbSz50SLGlZ_8m9hpGZfEaSZrgJfujII" />
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="icon" type="image/png" href="../static/images/icons/favicon.ico"/>
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/fonts/iconic/css/material-design-iconic-font.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/animate/animate.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="../static/css/util.css">
         <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-    <!--===============================================================================================-->
-    <script src="https://hcaptcha.com/1/api.js" async defer></script>
-  </head>
+        <!--===============================================================================================-->
+        <script src="https://hcaptcha.com/1/api.js" async defer></script>
+    </head>
 
-  <body>
-    <div>QR code generator: <a href="/index">Home</a></div>
-    <hr>
-    <div id="app-wrapper">
-      <div id="form-wrapper">
-      {% block content %}{% endblock %}
-      </div>
-    </div>
+    <body>
+        <div>QR code generator: <a href="/index">Home</a></div>
+        <hr>
+        <div id="app-wrapper">
+            <div id="form-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
 
-  </body>
+    </body>
 
- <footer >
-     <br>
+    <footer style="display: block; background-color: darkgrey; color: white; text-align: center;">
+        <br>
+        <div>
+            <!-- APP SPONSORED BY: -->
+            <div style="background-color: white; margin-left:20%; margin-right:20%; background-image: unset;">
+                <script type="text/javascript"> var infolinks_pid = 3301515; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
 
-     <script type="text/javascript"> var infolinks_pid = 3301515; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+                <div id="NEON_elmt" style="display: block; text-align: center;"></div>
+                <script data-cfasync='false' type='text/javascript' src='//neon.today/native/script/47901/10848/'></script>
+            </div>
+            <br>
+        </div>
+        <br>
+        <div>
+            <!-- Yandex.Metrika informer -->
+            <a href="https://metrika.yandex.ru/stat/?id=69642469&amp;from=informer"
+               target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/69642469/3_0_FFFFFFFF_EFEFEFFF_0_uniques"
+                                                   style="width:88px; height:31px; border:0; display: block; margin: auto; text-align: center;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="69642469" data-lang="ru" /></a>
+            <!-- /Yandex.Metrika informer -->
 
-     <div id="NEON_elmt" style="margin:0 auto;"></div>
-     <script data-cfasync='false' type='text/javascript' src='//neon.today/native/script/47901/10848/'></script>
+            <!-- Yandex.Metrika counter -->
+            <script type="text/javascript" >
+                (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+                (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-     <br>
-    <!-- Yandex.Metrika informer -->
-    <a href="https://metrika.yandex.ru/stat/?id=69642469&amp;from=informer"
-    target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/69642469/3_0_FFFFFFFF_EFEFEFFF_0_uniques"
-    style="width:88px; height:31px; border:0; display: block; margin: auto; text-align: center;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="69642469" data-lang="ru" /></a>
-    <!-- /Yandex.Metrika informer -->
+                ym(69642469, "init", {
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            </script>
+            <noscript><div><img src="https://mc.yandex.ru/watch/69642469" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+            <!-- /Yandex.Metrika counter -->
 
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-K643M8LVC7"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-       ym(69642469, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/69642469" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-    <br>
+              gtag('config', 'G-K643M8LVC7');
+            </script>
+        </div>
+        <br>
 
-
- </footer>
+    </footer>
 </html>
