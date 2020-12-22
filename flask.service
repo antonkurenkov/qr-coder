@@ -1,16 +1,1 @@
-[Unit]
-Description=flask
-Wants=network.target
-After=network.target
-
-[Service]
-
-WorkingDirectory=/root/qr-coder/
-#User=root
-Type=simple
-ExecStart=python3.7 /root/qr-coder/run.py
-ExecStop=kill $(pgrep python)
-PIDFile=/root/qr-coder/flask.pid
-RemainAfterExit=true
-Restart=always
-RuntimeMaxSec=10800
+s
