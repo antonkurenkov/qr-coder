@@ -1,1 +1,17 @@
-s
+[Unit]
+Description=flask
+Wants=network.target
+After=network.target
+
+[Service]
+
+WorkingDirectory=/root/qr-coder/
+#User=root
+Type=simple
+#ExecStart=/usr/bin/python3.7 /root/qr-coder/run.py
+ExecStart=/usr/local/bin/gunicorn --workers 3 --certfile=/etc/ssl/server.crt --keyfile=/etc/ssl/server.key --bind 0.0.0.0:443 wsgi:app
+ExecStop=/bin/kill $(pgrep python)
+PIDFile=/root/qr-coder/flask.pid
+RemainAfterExit=true
+Restart=always
+RuntimeMaxSec=10800
